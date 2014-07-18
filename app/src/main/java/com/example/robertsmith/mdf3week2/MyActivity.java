@@ -26,6 +26,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+//Robert Smith
+//MDF3 Term 1407
+//Take n Share
+//This will be a Single Activity application that will serve as a Camera app
+//That will take a picture and allow the user to save it to the devices gallery
+//and send them a notification when the save occurs
 
 public class MyActivity extends Activity {
 
@@ -54,6 +60,7 @@ public class MyActivity extends Activity {
             @Override
             public void onClick(View view)
             {
+                //Intent to start the devices camera
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CODE);
             }
@@ -73,6 +80,7 @@ public class MyActivity extends Activity {
     {
         if (requestCode == CODE && resultCode == RESULT_OK)
         {
+            //get bitmap from image so it can be saved
             mBitmap = (Bitmap) data.getExtras().get("data");
             mPic.setImageBitmap(mBitmap);
         }
@@ -80,18 +88,23 @@ public class MyActivity extends Activity {
 
     private void Save(Bitmap image)
     {
+        //get file path from device
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath()+ mFolderName;
+        //calender is needed so every pic will have a unique name
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String formattedDate = df.format(cal.getTime());
+        //see if directory exist
         File dir = new File(file_path);
         if(!dir.exists())
         {
             dir.mkdirs();
         }
+        //make unique file name for image
         File file = new File(dir, mFileName + formattedDate + ".jpg");
         Log.e("FILE", "" + file.toString());
 
+        //save the file
         try
         {
             FileOutputStream fOut = new FileOutputStream(file);
@@ -99,6 +112,7 @@ public class MyActivity extends Activity {
             image.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
             fOut.flush();
             fOut.close();
+            //scanFile tells the device to search for new images-without this the image will not appear in gallery unless the phone resets
             MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null, new MediaScannerConnection.OnScanCompletedListener(){
 
                 @Override
@@ -108,8 +122,10 @@ public class MyActivity extends Activity {
                     Log.e("SAVED AS", "" + s);
                 }
             });
+            //reset image
             mPic.setImageResource(R.drawable.placeholder);
 
+            //fire the notification
             generateLocalNotification();
 
         }
