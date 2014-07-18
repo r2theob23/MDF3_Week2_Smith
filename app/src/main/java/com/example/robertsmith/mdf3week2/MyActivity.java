@@ -1,7 +1,9 @@
 package com.example.robertsmith.mdf3week2;
 
 import android.app.Activity;
-import android.content.ContentValues;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,7 +11,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -106,9 +106,11 @@ public class MyActivity extends Activity {
                 {
                     //Toast.makeText(mContext, "Picture Saved", Toast.LENGTH_LONG).show();
                     Log.e("SAVED AS", "" + s);
-                    mPic.setImageResource(0);
                 }
             });
+            mPic.setImageResource(R.drawable.placeholder);
+
+            generateLocalNotification();
 
         }
         catch (FileNotFoundException e)
@@ -119,6 +121,28 @@ public class MyActivity extends Activity {
         {
             Toast.makeText(mContext, "Picture cannot be saved", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void generateLocalNotification()
+    {
+        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new Notification();
+
+        Notification.Builder builder = new Notification.Builder(this)
+
+                .setSmallIcon(R.drawable.photo)
+                .setContentTitle("New Photo")
+                .setContentText("A new photo is is your gallery");
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        builder.setContentIntent(pendingIntent);
+        notification = builder.build();
+
+        manager.notify(0, notification);
+
     }
 
     @Override
