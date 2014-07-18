@@ -148,7 +148,7 @@ public class MyActivity extends Activity {
 
                 .setSmallIcon(R.drawable.photo)
                 .setContentTitle("New Photo")
-                .setContentText("A new photo is is your gallery");
+                .setContentText("A new photo is in your gallery");
 
         Intent intent = new Intent(Intent.ACTION_PICK);
 
