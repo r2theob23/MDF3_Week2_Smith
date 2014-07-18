@@ -12,16 +12,26 @@
     <ImageView
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:id="@+id/imageView"
+        android:id="@+id/picture"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" />
+        android:text="Take Photo"
+        android:id="@+id/takePic"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/picture"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Photo"
+        android:id="@+id/savePic"
+        android:layout_alignTop="@+id/takePic"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
